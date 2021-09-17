@@ -18,6 +18,8 @@ namespace TrainingWebApp.Mapper
             CreateMap<User, UserViewModel>()
                             .ForMember(d => d.Name, d => d.MapFrom(s => s.FirstName))
                             .ReverseMap();
+            CreateMap<Post, PostViewModel>()
+                            .ReverseMap();
 
         }
     }

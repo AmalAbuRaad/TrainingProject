@@ -15,6 +15,6 @@ namespace TrainingWebApp.Models
         public string LastName { get; set; }
         public long Age { get; set; }
         public ICollection<Post> Posts { get; set; }
-        //public DateTime CreateDate { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public DateTime CreateDate { get; set; }
     }
 }

@@ -17,6 +17,6 @@ namespace TrainingWebApp.Models
         [ForeignKey(name: "UserId")]
         [Display(Name = "User")]
         public User User { get; set; }
-        //public DateTime CreateDate { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public DateTime CreateDate { get; set; }
     }
 }

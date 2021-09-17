@@ -8,7 +8,7 @@ namespace TrainingWebApp.Models
     public interface IModelBase
     {
         public long Id { get; set; }
-      //  public DateTime CreateDate { get; set; }
+        public DateTime CreateDate { get; set; }
 
     }
 }
