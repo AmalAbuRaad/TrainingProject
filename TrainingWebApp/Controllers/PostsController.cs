@@ -45,7 +45,7 @@ namespace TrainingWebApp.Controllers
         // PUT: api/Posts/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public void PutPost(long id, PostViewModel postVM)
+        public void PutPost(long id, [FromBody] PostViewModel postVM)
         {
             var post = _mapper.Map<PostViewModel, Post>(postVM);
             _repository.Update(post);
@@ -54,24 +54,24 @@ namespace TrainingWebApp.Controllers
         // POST: api/Posts
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public void PostPost(PostViewModel postVM)
+        public void PostPost([FromBody] PostViewModel postVM)
         {
             var post = _mapper.Map<PostViewModel, Post>(postVM);
             _repository.Add(post);
         }
 
         // DELETE: api/Posts/5
-        [HttpDelete("DeleteById/{id}")]
+        [HttpDelete("{id}")]
         public void DeleteById(long id)
         {
             _repository.Delete(id);
         }
 
-        [HttpDelete("DeleteByPost/{post}")]
-        public void DeleteByPost(PostViewModel postVM)
+        /*[HttpDelete("DeleteByPost/{post}")]
+        public void DeleteByPost([FromBody] PostViewModel postVM)
         {
             var post = _mapper.Map<Post>(postVM);
             _repository.Delete(post);
-        }
+        }*/
     }
 }

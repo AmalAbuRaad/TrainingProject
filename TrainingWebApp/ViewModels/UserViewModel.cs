@@ -10,6 +10,6 @@ namespace TrainingWebApp.ViewModels
     {
         public long Id { get; set; }
         public string Name { get; set; }
-        public List<PostViewModel> UserPosts { get; set; }
+        public List<PostViewModel> Posts { get; set; }
     }
 }

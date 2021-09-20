@@ -45,7 +45,7 @@ namespace TrainingWebApp.Controllers
         // PUT: api/Users/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public void PutUser(long id, UserViewModel userVM)
+        public void PutUser(long id, [FromBody] UserViewModel userVM)
         {
             var user = _mapper.Map<UserViewModel, User>(userVM);
             _repository.Update(user);
@@ -54,24 +54,40 @@ namespace TrainingWebApp.Controllers
         // POST: api/Users
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public void PostUser(UserViewModel userVM)
+        public void PostUser([FromBody] UserViewModel userVM)
         {
             var user = _mapper.Map<UserViewModel, User> (userVM);
             _repository.Add(user);
         }
 
         // DELETE: api/Users/5
-        [HttpDelete("DeleteById/{id}")]
+        [HttpDelete("{id}")]
         public void DeleteUser(long id)
         {
            _repository.Delete(id);
         }
 
-        [HttpDelete("DeleteByUser/{user}")]
+        [HttpGet("GetPosts")]
+        public IEnumerable<UserViewModel> GetUserPosts()
+        {
+            var posts = _repository.GetPosts();
+            return _mapper.Map<List<UserViewModel>>(posts);
+
+        }
+
+        [HttpGet("GetFullName")]
+        public IEnumerable<ProjViewModel> GetFN()
+        {
+            return _repository.UserProj();
+
+
+        }
+
+        /*[HttpDelete("DeleteByUser/{user}")]
         public void DeleteUser(UserViewModel userVM)
         {
             var user = _mapper.Map<User>(userVM);
             _repository.Delete(user);
-        }
+        }*/
     }
 }

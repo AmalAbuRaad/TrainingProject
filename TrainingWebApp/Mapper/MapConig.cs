@@ -20,7 +20,8 @@ namespace TrainingWebApp.Mapper
                             .ReverseMap();
             CreateMap<Post, PostViewModel>()
                             .ReverseMap();
-
+            CreateMap<User, ProjViewModel>()
+                            .ReverseMap();
         }
     }
 }

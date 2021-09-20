@@ -18,5 +18,6 @@ namespace TrainingWebApp.Models
         [Display(Name = "User")]
         public User User { get; set; }
         public DateTime CreateDate { get; set; }
+        //[ignoreMember]
     }
 }
