@@ -13,22 +13,51 @@ using TrainingWebApp.Models;
 using TrainingWebApp.ViewModels;
 namespace TrainingWebApp.Repo
 {
+    
     public class UserRepo : GenRepo<User>, IUserRepo
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IDbContextFactory<ApplicationDbContext> _contextFactory;
         private readonly IMapper _mapper;
-        public UserRepo(ApplicationDbContext context, IMapper mapper): base(context)
+        public UserRepo(IDbContextFactory<ApplicationDbContext> contextFactory, IMapper mapper) : base(contextFactory)
         {
-            _context = context;
+            _contextFactory = contextFactory;
             _mapper = mapper;
         }
-        public List<User> GetPosts()
+        public async Task<List<User>> GetPosts()
         {
-            return _context.Users.Include(u => u.Posts).ToList();
+            using (var _context = _contextFactory.CreateDbContext())
+            {
+                return await _context.Users.Include(u => u.Posts).ToListAsync();
+            }
         }
-        public List<ProjViewModel> UserProj()
+        public async Task<List<ProjViewModel>> UserProj()
         {
-            return _context.Users.ProjectTo<ProjViewModel>(_mapper.ConfigurationProvider).ToList();
+            using (var _context = _contextFactory.CreateDbContext())
+            {
+                return await _context.Users.ProjectTo<ProjViewModel>(_mapper.ConfigurationProvider).ToListAsync();
+            }
+
+
+        }
+        public async Task GetRecord(int size, int number)
+        {
+            
+            using (var _context = _contextFactory.CreateDbContext())
+            {
+                var x = _context.Users.OrderBy(u => u.Id)
+                                  .Skip(size * (number - 1))
+                                  .Take(size)
+                                  .ToListAsync();
+                using (var _context1 = _contextFactory.CreateDbContext())
+                {
+                  var y = _context1.Users.CountAsync();
+
+                    await Task.WhenAll(new List<Task>() { x ,y});
+
+                }
+            }
+       
+            
 
 
         }

@@ -27,18 +27,25 @@ namespace TrainingWebApp.Controllers
         }
         // GET: api/Users
         [HttpGet]
-        public IEnumerable<UserViewModel> GetUsers()
+        public async Task<IEnumerable<UserViewModel>> GetUsers()
         {
-            var users =  _repository.GetList();
-            return _mapper.Map<List<UserViewModel>>(users);
+            var users =  await _repository.GetList();
+            return  _mapper.Map<List<UserViewModel>>(users);
         }
 
         // GET: api/Users/5
         [HttpGet("{id}")]
-        public UserViewModel GetUser(long id)
+        public async Task<UserViewModel> GetUser(long id)
         {
-            var user = _repository.Get(id);
+            var user = await _repository.Get(id);
             return _mapper.Map<UserViewModel>(user);
+
+        }
+
+        [HttpGet("{size}/{number}")]
+        public async Task GetRecord(int size, int number)
+        {
+            await _repository.GetRecord(size, number);
 
         }
 
@@ -68,17 +75,17 @@ namespace TrainingWebApp.Controllers
         }
 
         [HttpGet("GetPosts")]
-        public IEnumerable<UserViewModel> GetUserPosts()
+        public async Task<IEnumerable<UserViewModel>> GetUserPosts()
         {
-            var posts = _repository.GetPosts();
+            var posts = await _repository.GetPosts();
             return _mapper.Map<List<UserViewModel>>(posts);
 
         }
 
         [HttpGet("GetFullName")]
-        public IEnumerable<ProjViewModel> GetFN()
+        public async Task<IEnumerable<ProjViewModel>> GetFN()
         {
-            return _repository.UserProj();
+            return await _repository.UserProj();
 
 
         }

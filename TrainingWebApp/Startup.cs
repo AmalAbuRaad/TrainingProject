@@ -1,21 +1,16 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using TrainingWebApp.Data;
 using TrainingWebApp.Repo;
 using TrainingWebApp.IRepo;
-using TrainingWebApp.Models;
+using EFCore.DbContextFactory.Extensions;
+using NPOI.SS.Formula.Functions;
 
 namespace TrainingWebApp
 {
@@ -31,9 +26,13 @@ namespace TrainingWebApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //var dbLogger = LoggerFactory.Create(builder => builder.AddConsole());
+
             var ConnString = Configuration.GetConnectionString("Default");
             services.AddAutoMapper(typeof(Startup));
-            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(ConnString));
+            //services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(ConnString));
+            services.AddDbContextFactory<ApplicationDbContext>(options => options.UseSqlServer(ConnString),
+             ServiceLifetime.Scoped);
             services.AddScoped<IUserRepo, UserRepo>();
             services.AddScoped<IPostRepo, PostRepo>();
             services.AddControllers();
@@ -53,6 +52,19 @@ namespace TrainingWebApp
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "TrainingWebApp v1"));
             }
 
+            //app.Use(async (context, next) =>
+            //{
+            //    try { await next(); }
+            //    catch { await context.Response.WriteAsync("Hello World From 1st Middleware!"); }
+   
+            //});
+
+            //app.Use(async (context, next) =>
+            //{
+            //    await context.Response.WriteAsync("Hello World From 2nd Middleware");
+            //    throw new Exception("error");
+            //});
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
@@ -63,6 +75,9 @@ namespace TrainingWebApp
             {
                 endpoints.MapControllers();
             });
+
+
+
         }
     }
 }

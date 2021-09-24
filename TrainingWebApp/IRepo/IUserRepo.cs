@@ -9,9 +9,9 @@ namespace TrainingWebApp.IRepo
 {
     public interface IUserRepo: IGenRepo<User>
     {
-        List<User> GetPosts();
-        List<ProjViewModel> UserProj();
-
+        Task<List<User>> GetPosts();
+        Task<List<ProjViewModel>> UserProj();
+        Task GetRecord(int size, int number);
 
     }
 

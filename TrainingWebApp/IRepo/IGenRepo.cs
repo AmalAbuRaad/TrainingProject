@@ -9,8 +9,8 @@ namespace TrainingWebApp.IRepo
     public interface IGenRepo<T>  where T :  class, IModelBase
     {
         void Add (T obj);
-        T Get (long id);
-        List<T> GetList ();
+        Task<T> Get (long id);
+        Task<List<T>> GetList ();
         void Update (T obj);
         void Delete(long id);
         void Delete(T obj);

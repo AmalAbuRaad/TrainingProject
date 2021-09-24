@@ -28,17 +28,17 @@ namespace TrainingWebApp.Controllers
 
         // GET: api/Posts
         [HttpGet]
-        public IEnumerable<PostViewModel> GetPosts()
+        public async Task<IEnumerable<PostViewModel>> GetPosts()
         {
-            var posts = _repository.GetList();
+            var posts = await _repository.GetList();
             return _mapper.Map<List<PostViewModel>>(posts);
         }
 
         // GET: api/Posts/5
         [HttpGet("{id}")]
-        public PostViewModel GetPost(long id)
+        public async Task<PostViewModel> GetPost(long id)
         {
-            var user = _repository.Get(id);
+            var user = await _repository.Get(id);
             return _mapper.Map<PostViewModel>(user);
         }
 

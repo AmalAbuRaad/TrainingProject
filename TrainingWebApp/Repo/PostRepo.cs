@@ -12,8 +12,8 @@ namespace TrainingWebApp.Repo
 {
     public class PostRepo: GenRepo<Post>, IPostRepo
     {
-        public PostRepo(ApplicationDbContext context) : base(context)
-        {}
+        public PostRepo(IDbContextFactory<ApplicationDbContext> contextFactory) : base(contextFactory)
+        { }
 
 
 }

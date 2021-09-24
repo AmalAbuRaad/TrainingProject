@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,45 +11,62 @@ namespace TrainingWebApp.Repo
 {
     public class GenRepo<T> : IGenRepo<T> where T : class, IModelBase
     {
-        private readonly ApplicationDbContext _context;
-        public GenRepo(ApplicationDbContext context)
+        private readonly IDbContextFactory<ApplicationDbContext> _contextFactory;
+        public GenRepo(IDbContextFactory<ApplicationDbContext> contextFactory) 
         {
-            _context = context;
+            _contextFactory = contextFactory;
         }
 
-        public void Add(T obj)
+        public async void Add(T obj)
         {
-            _context.Set<T>().Add(obj);
-            _context.SaveChanges();
+            using (var _context = _contextFactory.CreateDbContext())
+            {
+                await _context.Set<T>().AddAsync(obj);
+                await _context.SaveChangesAsync();
+            }
         }
 
-        public void Delete(long id)
+        public async void Delete(long id)
         {
-            var obj = _context.Set<T>().FirstOrDefault(t => t.Id == id);
-            _context.Set<T>().Remove(obj);
-            _context.SaveChanges();
+            using (var _context = _contextFactory.CreateDbContext())
+            {
+                var obj = await _context.Set<T>().FirstOrDefaultAsync(t => t.Id == id);
+                _context.Set<T>().Remove(obj);
+                await _context.SaveChangesAsync();
+            }
         }
 
-        public void Delete(T obj)
+        public async void Delete(T obj)
         {
-            _context.Set<T>().Remove(obj);
-            _context.SaveChanges();
+            using (var _context = _contextFactory.CreateDbContext())
+            {
+                _context.Set<T>().Remove(obj);
+                await _context.SaveChangesAsync();
+            }
         }
 
-        public T Get(long id)
+        public async Task<T> Get(long id)
         {
-            return _context.Set<T>().FirstOrDefault(t => t.Id == id);
+            using (var _context = _contextFactory.CreateDbContext()) { 
+                return await _context.Set<T>().FirstOrDefaultAsync(t => t.Id == id);
+        }
         }
 
-        public List<T> GetList()
+        public async Task<List<T>> GetList()
         {
-            return _context.Set<T>().ToList();
+            using (var _context = _contextFactory.CreateDbContext())
+            {
+                return await _context.Set<T>().ToListAsync();
+            }
         }
 
-        public void Update(T obj)
+        public async void Update(T obj)
         {
-            _context.Set<T>().Update(obj);
-            _context.SaveChanges();
+            using (var _context = _contextFactory.CreateDbContext())
+            {
+                _context.Set<T>().Update(obj);
+                await _context.SaveChangesAsync();
+            }
         }
     }
 }
