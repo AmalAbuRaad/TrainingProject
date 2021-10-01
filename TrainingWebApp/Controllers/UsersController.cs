@@ -27,6 +27,7 @@ namespace TrainingWebApp.Controllers
         }
         // GET: api/Users
         [HttpGet]
+        [Authorize]
         public async Task<IEnumerable<UserViewModel>> GetUsers()
         {
             var users =  await _repository.GetList();
@@ -43,9 +44,9 @@ namespace TrainingWebApp.Controllers
         }
 
         [HttpGet("{size}/{number}")]
-        public async Task GetRecord(int size, int number)
+        public void GetRecord(int size, int number)
         {
-            await _repository.GetRecord(size, number);
+            _repository.GetRecord(size, number);
 
         }
 

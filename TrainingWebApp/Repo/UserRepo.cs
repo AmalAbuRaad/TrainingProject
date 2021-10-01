@@ -36,28 +36,25 @@ namespace TrainingWebApp.Repo
             {
                 return await _context.Users.ProjectTo<ProjViewModel>(_mapper.ConfigurationProvider).ToListAsync();
             }
-
-
         }
         public async Task GetRecord(int size, int number)
         {
-            
             using (var _context = _contextFactory.CreateDbContext())
             {
                 var x = _context.Users.OrderBy(u => u.Id)
                                   .Skip(size * (number - 1))
                                   .Take(size)
                                   .ToListAsync();
-                using (var _context1 = _contextFactory.CreateDbContext())
+                using (var _context1= _contextFactory.CreateDbContext())
                 {
-                  var y = _context1.Users.CountAsync();
+                    var y = _context1.Users.CountAsync();
 
-                    await Task.WhenAll(new List<Task>() { x ,y});
+                    await Task.WhenAll(new List<Task>() { x, y });
 
                 }
             }
-       
-            
+
+
 
 
         }

@@ -8,9 +8,17 @@ namespace TrainingWebApp.Models
 {
     public class User : IModelBase
     {
+        public User()
+        {
+            this.CreateDate = DateTime.Now;
+
+        }
         [Key]
         [Required]
         public long Id { get; set; }
+        public string UserName { get; set; }
+        [DataType(DataType.Password)]
+        public string Password { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public long Age { get; set; }
