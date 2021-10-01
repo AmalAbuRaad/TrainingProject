@@ -28,6 +28,7 @@ namespace TrainingWebApp.Controllers
 
         // GET: api/Posts
         [HttpGet]
+        [Authorize]
         public async Task<IEnumerable<PostViewModel>> GetPosts()
         {
             var posts = await _repository.GetList();
